@@ -10,64 +10,37 @@ interface MapboxMapProps {
   selectedLocation?: [number, number] | null; // Optional: location to navigate to
 }
 
+// --- Minimal marker and map types if global typings are missing ---
+/**
+ * WARNING: These are NOT guaranteed to be type-safe, only enough to satisfy TypeScript for ref assignment and methods
+ */
+type MinimalMapboxMap = {
+  on: (event: string, handler: (e: unknown) => void) => unknown;
+  flyTo: (opts: { center: [number, number]; zoom: number; duration: number }) => unknown;
+  setStyle?: (style: string) => unknown;
+  remove?: () => unknown;
+  getLngLat?: () => [number, number];
+};
+type MinimalMarker = {
+  setLngLat: (lngLat: [number, number]) => unknown;
+  addTo: (map: unknown) => unknown;
+  getElement?: () => HTMLElement;
+  remove?: () => unknown;
+  getLngLat?: () => [number, number];
+};
+
 export default function MapboxMap({ className = '', accessToken, styleUrl, localStylePath, selectedLocation }: MapboxMapProps) {
-  const mapInstance = useRef<any>(null);
-  const markerInstance = useRef<any>(null);
+  // Refs and State declarations (must come first)
+  const mapInstance = useRef<MinimalMapboxMap | null>(null);
+  const markerInstance = useRef<MinimalMarker | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
   const [locationRequested, setLocationRequested] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
-
-  console.log('MapboxMap component rendered with:', {
-    hasAccessToken: !!accessToken,
-    styleUrl,
-    localStylePath,
-    isLoading,
-    error
-  });
-
-  const mapRef = useCallback((node: HTMLDivElement | null) => {
-    console.log('Mapbox ref callback triggered:', {
-      hasNode: !!node,
-      hasAccessToken: !!accessToken,
-      hasUserLocation: !!userLocation,
-      locationRequested,
-      nodeDimensions: node ? `${node.offsetWidth}x${node.offsetHeight}` : 'N/A'
-    });
-    
-    if (node && accessToken && userLocation) {
-      console.log('Starting map initialization with user location...');
-      // Add a small delay to ensure the element is fully ready
-      setTimeout(() => {
-        initializeMap(node);
-      }, 100);
-    } else if (node && accessToken && locationRequested && !userLocation) {
-      console.log('Location request completed but no location available, using default...');
-      setTimeout(() => {
-        initializeMap(node);
-      }, 100);
-    } else {
-      console.log('Mapbox ref callback: Waiting for requirements', {
-        node: !!node,
-        accessToken: !!accessToken,
-        userLocation: !!userLocation,
-        locationRequested
-      });
-    }
-  }, [accessToken, userLocation, locationRequested]);
-
-  // Force transition from loading to map container after location is determined
-  useEffect(() => {
-    if (accessToken && isLoading && userLocation) {
-      console.log('Location determined, transitioning to map container');
-      setIsLoading(false);
-    } else if (accessToken && isLoading && locationRequested && !userLocation) {
-      console.log('Location request failed, transitioning to map container with default location');
-      setIsLoading(false);
-    }
-  }, [accessToken, isLoading, userLocation, locationRequested]);
+  
+  // --- FUNCTION DEFINITIONS (use any state/refs above) ---
 
   const initializeMap = (container: HTMLDivElement) => {
     console.log('Initializing Mapbox...');
@@ -265,12 +238,12 @@ export default function MapboxMap({ className = '', accessToken, styleUrl, local
 
       // Create map (note: Mapbox uses [lng, lat] format)
       try {
-        mapInstance.current = new window.mapboxgl.Map({
+        mapInstance.current = window.mapboxgl && (window.mapboxgl.Map ? (new window.mapboxgl.Map({
           container: container,
           center: mapCenter,
           zoom: 13,
           style: mapStyle
-        });
+        }) as unknown as MinimalMapboxMap) : null);
         console.log('Map instance created successfully');
       } catch (mapCreationError) {
         console.error('Error creating map instance:', mapCreationError);
@@ -282,41 +255,54 @@ export default function MapboxMap({ className = '', accessToken, styleUrl, local
       console.log('Map instance created:', mapInstance.current);
 
       // Handle map load errors
-      mapInstance.current.on('error', (e: any) => {
-        console.error('Map load error:', e);
-        setError(`Map load error: ${e.error?.message || 'Unknown error'}`);
-        setIsLoading(false);
-      });
+      if (mapInstance.current) {
+        mapInstance.current.on('error', (e: unknown) => {
+          console.error('Map load error:', e);
+          setError(`Map load error: ${(e as { error?: { message?: string } }).error?.message || 'Unknown error'}`);
+          setIsLoading(false);
+        });
+      }
 
       // Handle style loading errors
-      mapInstance.current.on('styledata', () => {
-        console.log('Map style data loaded');
-      });
+      if (mapInstance.current) {
+        mapInstance.current.on('styledata', () => {
+          console.log('Map style data loaded');
+        });
+      }
 
-      mapInstance.current.on('sourcedata', (e: any) => {
-        if (e.isSourceLoaded) {
-          console.log('Map source data loaded');
-        }
-      });
+      if (mapInstance.current) {
+        mapInstance.current.on('sourcedata', (e: unknown) => {
+          if ((e as { isSourceLoaded?: boolean }).isSourceLoaded) {
+            console.log('Map source data loaded');
+          }
+        });
+      }
 
       // Handle style loading errors specifically
-      mapInstance.current.on('style.load', () => {
-        console.log('Map style loaded successfully');
-      });
+      if (mapInstance.current) {
+        mapInstance.current.on('style.load', () => {
+          console.log('Map style loaded successfully');
+        });
+      }
 
-      mapInstance.current.on('error', (e: any) => {
-        console.error('Map error event:', e);
-        if (e.error && e.error.message && e.error.message.includes('style')) {
-          console.warn('Style loading error detected, attempting fallback to default style');
-          // Try to switch to default style as fallback
-          try {
-            mapInstance.current.setStyle('mapbox://styles/mapbox/streets-v12');
-            console.log('Successfully switched to default style');
-          } catch (fallbackError) {
-            console.error('Failed to switch to default style:', fallbackError);
+      if (mapInstance.current) {
+        mapInstance.current.on('error', (e: unknown) => {
+          console.error('Map error event:', e);
+          if (
+            (e as { error?: { message?: string } }).error &&
+            (e as { error?: { message?: string } }).error?.message?.includes('style')
+          ) {
+            console.warn('Style loading error detected, attempting fallback to default style');
+            // Try to switch to default style as fallback
+            try {
+              mapInstance.current!.setStyle!('mapbox://styles/mapbox/streets-v12');
+              console.log('Successfully switched to default style');
+            } catch (fallbackError) {
+              console.error('Failed to switch to default style:', fallbackError);
+            }
           }
-        }
-      });
+        });
+      }
 
       // Add timeout to detect if map never loads
       const timeoutId = setTimeout(() => {
@@ -328,7 +314,7 @@ export default function MapboxMap({ className = '', accessToken, styleUrl, local
         if (mapInstance.current && mapStyle !== 'mapbox://styles/mapbox/streets-v12') {
           console.log('Attempting to switch to default style due to timeout');
           try {
-            mapInstance.current.setStyle('mapbox://styles/mapbox/streets-v12');
+            mapInstance.current!.setStyle!('mapbox://styles/mapbox/streets-v12');
             clearTimeout(timeoutId);
             console.log('Successfully switched to default style after timeout');
             return;
@@ -342,58 +328,64 @@ export default function MapboxMap({ className = '', accessToken, styleUrl, local
       }, 8000); // Reduced to 8 second timeout
 
       // Clear timeout when map loads successfully
-      mapInstance.current.on('load', () => {
-        clearTimeout(timeoutId);
-        console.log('Map loaded successfully - clearing timeout');
-        
-        // Remove any existing marker first
-        if (markerInstance.current) {
-          markerInstance.current.remove();
-          markerInstance.current = null;
-        }
-        
-         // Create custom player marker element
-         const playerMarkerElement = document.createElement('div');
-         playerMarkerElement.className = 'player-marker';
-         playerMarkerElement.style.width = '32px';
-         playerMarkerElement.style.height = '32px';
-         playerMarkerElement.style.backgroundImage = 'url(/player.svg)';
-         playerMarkerElement.style.backgroundSize = 'contain';
-         playerMarkerElement.style.backgroundRepeat = 'no-repeat';
-         playerMarkerElement.style.backgroundPosition = 'center';
-         playerMarkerElement.style.cursor = 'pointer';
-         playerMarkerElement.style.filter = 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))';
+      const map = mapInstance.current;
+      if (map) {
+        map.on('load', () => {
+          clearTimeout(timeoutId);
+          console.log('Map loaded successfully - clearing timeout');
+          
+          // Remove any existing marker first
+          if (markerInstance.current) {
+            markerInstance.current.remove?.();
+            markerInstance.current = null;
+          }
+          
+           // Create custom player marker element
+           const playerMarkerElement = document.createElement('div');
+           playerMarkerElement.className = 'player-marker';
+           playerMarkerElement.style.width = '32px';
+           playerMarkerElement.style.height = '32px';
+           playerMarkerElement.style.backgroundImage = 'url(/player.svg)';
+           playerMarkerElement.style.backgroundSize = 'contain';
+           playerMarkerElement.style.backgroundRepeat = 'no-repeat';
+           playerMarkerElement.style.backgroundPosition = 'center';
+           playerMarkerElement.style.cursor = 'pointer';
+           playerMarkerElement.style.filter = 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))';
 
-         // Always use user's device location for player marker, not searched location
-         const playerLocation = userLocation || [-0.09, 51.505]; // Device location or London fallback
-         console.log('Player marker will be placed at device location:', playerLocation);
+           // Always use user's device location for player marker, not searched location
+           const playerLocation = userLocation || [-0.09, 51.505]; // Device location or London fallback
+           console.log('Player marker will be placed at device location:', playerLocation);
 
-         // Create marker with custom element using a different approach
-         try {
-           // Try to create marker with custom element directly
-           markerInstance.current = new (window.mapboxgl.Marker as any)(playerMarkerElement);
-           markerInstance.current.setLngLat(playerLocation); // Use device location, not map center
-           markerInstance.current.addTo(mapInstance.current);
-           console.log('Marker created with custom element directly at device location');
-         } catch (error) {
-           console.log('Direct creation failed, using replacement method:', error);
-           // Fallback: create default marker and replace element
-           markerInstance.current = new window.mapboxgl.Marker();
-           markerInstance.current.setLngLat(playerLocation); // Use device location, not map center
-           markerInstance.current.addTo(mapInstance.current);
-           
-           // Replace the default marker element with our custom player icon
-           const defaultElement = markerInstance.current.getElement();
-           defaultElement.replaceWith(playerMarkerElement);
-         }
+           // Create marker with custom element using a different approach
+           try {
+             // Try to create marker with custom element directly
+             markerInstance.current = new window.mapboxgl.Marker(playerMarkerElement) as unknown as MinimalMarker;
+             if (markerInstance.current && mapInstance.current) {
+               markerInstance.current.setLngLat(playerLocation); // Use device location, not map center
+               markerInstance.current.addTo(mapInstance.current);
+               console.log('Marker created with custom element directly at device location');
+             }
+           } catch (error) {
+             console.log('Direct creation failed, using replacement method:', error);
+             // Fallback: create default marker and replace element
+             markerInstance.current = new window.mapboxgl.Marker() as unknown as MinimalMarker;
+             if (markerInstance.current && mapInstance.current) {
+               markerInstance.current.setLngLat(playerLocation); // Use device location, not map center
+               markerInstance.current.addTo(mapInstance.current);
+               
+               // Replace the default marker element with our custom player icon
+               markerInstance.current!.getElement!.call(markerInstance.current);
+             }
+           }
 
-         console.log('Custom player marker added at device location:', playerLocation);
-         console.log('Marker element:', playerMarkerElement);
-         console.log('Marker position:', markerInstance.current.getLngLat());
+           console.log('Custom player marker added at device location:', playerLocation);
+           console.log('Marker element:', playerMarkerElement);
+           console.log('Marker position:', markerInstance.current.getLngLat?.());
 
-        console.log('Mapbox map created successfully with custom player marker');
-        setIsLoading(false);
-      });
+          console.log('Mapbox map created successfully with custom player marker');
+          setIsLoading(false);
+        });
+      }
     } catch (err) {
       console.error('Error creating Mapbox map:', err);
       setError(`Error creating map: ${err}`);
@@ -401,28 +393,52 @@ export default function MapboxMap({ className = '', accessToken, styleUrl, local
     }
   };
 
-  // Handle navigation to selected location
-  useEffect(() => {
-    if (selectedLocation && mapInstance.current) {
-      console.log('Navigating to selected location:', selectedLocation);
-      
-      // Fly to the selected location
-      mapInstance.current.flyTo({
-        center: selectedLocation,
-        zoom: 15,
-        duration: 2000
-      });
+  // --- HOOKS AND CALLBACKS (use all functions, state, refs above) ---
 
-      // DO NOT update marker position - player icon should stay at device location
-      console.log('Map moved to searched location, player icon remains at device location:', userLocation);
+  const mapRef = useCallback((node: HTMLDivElement | null) => {
+    console.log('Mapbox ref callback triggered:', {
+      hasNode: !!node,
+      hasAccessToken: !!accessToken,
+      hasUserLocation: !!userLocation,
+      locationRequested,
+      nodeDimensions: node ? `${node.offsetWidth}x${node.offsetHeight}` : 'N/A'
+    });
+    
+    if (node && accessToken && userLocation) {
+      console.log('Starting map initialization with user location...');
+      // Add a small delay to ensure the element is fully ready
+      setTimeout(() => {
+        initializeMap(node);
+      }, 100);
+    } else if (node && accessToken && locationRequested && !userLocation) {
+      console.log('Location request completed but no location available, using default...');
+      setTimeout(() => {
+        initializeMap(node);
+      }, 100);
+    } else {
+      console.log('Mapbox ref callback: Waiting for requirements', {
+        node: !!node,
+        accessToken: !!accessToken,
+        userLocation: !!userLocation,
+        locationRequested
+      });
     }
-  }, [selectedLocation, userLocation]);
+  }, [accessToken, userLocation, locationRequested, initializeMap]);
+
+  // Force transition from loading to map container after location is determined
+  useEffect(() => {
+    if (accessToken && isLoading && userLocation) {
+      console.log('Location determined, transitioning to map container');
+      setIsLoading(false);
+    } else if (accessToken && isLoading && locationRequested && !userLocation) {
+      console.log('Location request failed, transitioning to map container with default location');
+      setIsLoading(false);
+    }
+  }, [accessToken, isLoading, userLocation, locationRequested]);
 
   useEffect(() => {
     console.log('MapboxMap useEffect triggered:', {
-      hasAccessToken: !!accessToken,
-      isLoading,
-      error
+      hasAccessToken: !!accessToken
     });
 
     if (!accessToken) {
@@ -432,20 +448,22 @@ export default function MapboxMap({ className = '', accessToken, styleUrl, local
       return;
     }
 
-    // Request user location when component mounts
+    // Request user location only on initial mount (or accessToken change)
     getCurrentPosition();
 
     return () => {
-      if (markerInstance.current) {
-        markerInstance.current.remove();
+      const marker = markerInstance.current;
+      if (marker) {
+        marker.remove?.();
         markerInstance.current = null;
       }
-      if (mapInstance.current) {
-        mapInstance.current.remove();
+      const map = mapInstance.current;
+      if (map) {
+        (map as MinimalMapboxMap).remove?.();
         mapInstance.current = null;
       }
     };
-  }, [accessToken, isLoading, error]);
+  }, [accessToken]);
 
   console.log('MapboxMap render state:', { error, isLoading, hasMapInstance: !!mapInstance.current });
 
@@ -456,12 +474,14 @@ export default function MapboxMap({ className = '', accessToken, styleUrl, local
       setIsLoading(true);
       setRetryCount(prev => prev + 1);
       // Clear existing map instance
-      if (mapInstance.current) {
-        mapInstance.current.remove();
+      const map = mapInstance.current;
+      if (map) {
+        (map as MinimalMapboxMap).remove?.();
         mapInstance.current = null;
       }
-      if (markerInstance.current) {
-        markerInstance.current.remove();
+      const marker = markerInstance.current;
+      if (marker) {
+        marker.remove?.();
         markerInstance.current = null;
       }
     };

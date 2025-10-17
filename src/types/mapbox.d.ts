@@ -7,15 +7,15 @@ declare global {
         center: [number, number];
         zoom: number;
         style: string;
-      }) => any;
+      }) => unknown;
       Marker: new () => {
-        setLngLat(coordinates: [number, number]): any;
-        addTo(map: any): any;
+        setLngLat(coordinates: [number, number]): unknown;
+        addTo(map: unknown): unknown;
       };
       Popup: new (options?: { offset?: number }) => {
-        setLngLat(coordinates: [number, number]): any;
-        setHTML(html: string): any;
-        addTo(map: any): any;
+        setLngLat(coordinates: [number, number]): unknown;
+        setHTML(html: string): unknown;
+        addTo(map: unknown): unknown;
       };
     };
   }

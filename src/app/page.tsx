@@ -1,10 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import MapboxMap from '@/components/MapboxMap';
+
+// Define type for Mapbox Search Results
+interface MapboxResult {
+  center: [number, number];
+  place_name: string;
+  properties?: {
+    category?: string;
+  };
+}
 
 export default function Home() {
   // Mapbox access token
@@ -12,7 +19,7 @@ export default function Home() {
   
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<MapboxResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<[number, number] | null>(null);
   
@@ -45,7 +52,7 @@ export default function Home() {
   };
 
   // Handle location selection
-  const handleLocationSelect = (location: any) => {
+  const handleLocationSelect = (location: MapboxResult) => {
     const [longitude, latitude] = location.center;
     setSelectedLocation([longitude, latitude]);
     setSearchQuery(location.place_name);
@@ -54,7 +61,7 @@ export default function Home() {
   };
 
   // Handle Enter key press
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
@@ -74,12 +81,11 @@ export default function Home() {
               >
                 Red Dead Redemption <span style={{ color: '#b70002' }}>2</span> Real World Map
               </h1>
-              
             </div>
 
-            {/* Search Bar */}
+            {/*
+            // Search Bar (Commented Out)
             <div className="mb-6 max-w-2xl mx-auto">
-             
               <div className="relative">
                 <div className="flex gap-2">
                   <Input
@@ -87,7 +93,7 @@ export default function Home() {
                     placeholder="Search for a location (e.g., New York, London, Tokyo)..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyPress={handleKeyPress as any}
+                    onKeyPress={handleKeyPress}
                     className="flex-1"
                     style={{ 
                       fontFamily: '"Chinese Rocks RG", "Chinese Rocks", "ChineseRocksRG", "ChineseRocks", Arial, sans-serif',
@@ -107,7 +113,6 @@ export default function Home() {
                   </Button>
                 </div>
                 
-                {/* Search Results Dropdown */}
                 {searchResults.length > 0 && (
                   <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
                     {searchResults.map((result, index) => (
@@ -131,6 +136,7 @@ export default function Home() {
                 )}
               </div>
             </div>
+            */}
 
             <div className="max-w-6xl mx-auto">
               {/* RDR2 Style Map */}
@@ -144,19 +150,7 @@ export default function Home() {
                   />
                 </CardContent>
               </Card>
-
             </div>
-
-        {/* <div className="mt-8 text-center text-sm text-gray-500">
-          <p>
-            Map automatically centers on your location with custom RDR2 styling
-          </p>
-          <p className="mt-2 text-xs">
-            RDR2 Style: ✅ Custom Mapbox Style | 
-            Player Icon: ✅ Custom SVG Marker | 
-            Powered by Mapbox GL JS
-          </p>
-        </div> */}
       </div>
     </div>
   );
