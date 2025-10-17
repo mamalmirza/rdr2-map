@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Maps API Test</title>
+    <style>
+        #map { height: 400px; width: 100%; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Google Maps API Test</h1>
+    <div id="status" class="status">Testing API key...</div>
+    <div id="map"></div>
+
+    <script>
+        const API_KEY = 'AIzaSyAdQuaUbFqsVGX1seOE0SiKCGHc-GhY1c4';
+        const statusDiv = document.getElementById('status');
+        
+        function initMap() {
+            try {
+                const map = new google.maps.Map(document.getElementById('map'), {
+                    center: { lat: 51.505, lng: -0.09 },
+                    zoom: 13,
+                });
+                
+                new google.maps.Marker({
+                    position: { lat: 51.505, lng: -0.09 },
+                    map: map,
+                    title: 'London, UK'
+                });
+                
+                statusDiv.textContent = '✅ Google Maps loaded successfully!';
+                statusDiv.className = 'status success';
+            } catch (error) {
+                statusDiv.textContent = '❌ Error: ' + error.message;
+                statusDiv.className = 'status error';
+            }
+        }
+        
+        function loadGoogleMaps() {
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&callback=initMap`;
+            script.async = true;
+            script.defer = true;
+            
+            script.onerror = function() {
+                statusDiv.textContent = '❌ Failed to load Google Maps script';
+                statusDiv.className = 'status error';
+            };
+            
+            document.head.appendChild(script);
+        }
+        
+        // Start loading
+        loadGoogleMaps();
+    </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapbox Style Test</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.js"></script>
+    <style>
+        body { margin: 0; padding: 20px; font-family: Arial, sans-serif; }
+        #map { width: 100%; height: 400px; margin: 20px 0; border: 1px solid #ccc; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Mapbox Style Test</h1>
+    
+    <div class="test-section">
+        <h2>Your Custom Style Test</h2>
+        <p><strong>Style URL:</strong> mapbox://styles/mamalmirza/cmgtuwcll003k01qrexcs3se4</p>
+        <p><strong>Token:</strong> pk.eyJ1IjoibWFtYWxtaXJ6YSIsImEiOiJjbWd0dHZvczAwNXBxMm1xMjlsYXlvNmQ5In0.MeoSaYoFCOrxx1pQRs7YHA</p>
+        <div id="status">Testing...</div>
+        <div id="map"></div>
+    </div>
+
+    <script>
+        const accessToken = 'pk.eyJ1IjoibWFtYWxtaXJ6YSIsImEiOiJjbWd0dHZvczAwNXBxMm1xMjlsYXlvNmQ5In0.MeoSaYoFCOrxx1pQRs7YHA';
+        const customStyle = 'mapbox://styles/mamalmirza/cmgtuwcll003k01qrexcs3se4';
+        
+        mapboxgl.accessToken = accessToken;
+        
+        const statusDiv = document.getElementById('status');
+        
+        function updateStatus(message, isError = false) {
+            statusDiv.innerHTML = `<span class="${isError ? 'error' : 'success'}">${message}</span>`;
+            console.log(message);
+        }
+        
+        try {
+            updateStatus('Creating map with custom style...');
+            
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: customStyle,
+                center: [0, 0],
+                zoom: 2
+            });
+            
+            map.on('load', () => {
+                updateStatus('✅ Custom style loaded successfully!');
+            });
+            
+            map.on('error', (e) => {
+                updateStatus(`❌ Error loading custom style: ${e.error?.message || 'Unknown error'}`, true);
+                
+                // Try fallback to default style
+                setTimeout(() => {
+                    updateStatus('Attempting fallback to default style...');
+                    try {
+                        map.setStyle('mapbox://styles/mapbox/streets-v12');
+                        map.on('style.load', () => {
+                            updateStatus('✅ Fallback to default style successful!');
+                        });
+                    } catch (fallbackError) {
+                        updateStatus(`❌ Fallback failed: ${fallbackError.message}`, true);
+                    }
+                }, 1000);
+            });
+            
+            // Timeout after 10 seconds
+            setTimeout(() => {
+                if (statusDiv.textContent.includes('Testing...') || statusDiv.textContent.includes('Creating map')) {
+                    updateStatus('❌ Timeout - style took too long to load', true);
+                }
+            }, 10000);
+            
+        } catch (error) {
+            updateStatus(`❌ Failed to create map: ${error.message}`, true);
+        }
+    </script>
+</body>
+</html>

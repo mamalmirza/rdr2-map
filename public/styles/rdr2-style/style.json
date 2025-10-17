@@ -1,0 +1,692 @@
+{
+    "version": 8,
+    "name": "Blank",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template",
+        "mapbox:sdk-support": {
+            "js": "3.16.0",
+            "android": "11.16.0",
+            "ios": "11.16.0"
+        },
+        "mapbox:groups": {
+            "4038d10f07348e73fecf17cd901a6b68": {
+                "name": "Contour",
+                "collapsed": true
+            },
+            "677cc07e09f9642a455099d4b771103c": {
+                "name": "Buildings",
+                "collapsed": true
+            },
+            "e3dd7e5f56a788fdb6fe3927db6bac2d": {
+                "name": "Railway",
+                "collapsed": true
+            },
+            "ba3540579e55c5f1f51fb98ccae6aa0e": {
+                "name": "Roads",
+                "collapsed": true
+            },
+            "647daebc59426f62bc518e3e7b7da275": {
+                "name": "Water",
+                "collapsed": true
+            },
+            "ce4dfaf1163a97380a0a24175a0a884e": {
+                "name": "Typography",
+                "collapsed": false
+            },
+            "ed0cc92f134c4c11442b0f497900da8f": {
+                "name": "Icons",
+                "collapsed": false
+            }
+        },
+        "mapbox:thumb": "data:image/webp;base64,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"
+    },
+    "sources": {
+        "composite": {
+            "url": "mapbox://mapbox.mapbox-streets-v8,mapbox.mapbox-terrain-v2",
+            "type": "vector"
+        }
+    },
+    "sprite": "mapbox://sprites/mamalmirza/cmgtuwcll003k01qrexcs3se4/c1haxp39c2ykkmbmp00nhhmf4",
+    "glyphs": "mapbox://fonts/mamalmirza/{fontstack}/{range}.pbf",
+    "projection": {"name": "globe"},
+    "layers": [
+        {
+            "id": "Land",
+            "type": "background",
+            "layout": {},
+            "paint": {"background-color": "#dec29b"}
+        },
+        {
+            "id": "Contour Line",
+            "type": "line",
+            "metadata": {"mapbox:group": "4038d10f07348e73fecf17cd901a6b68"},
+            "source": "composite",
+            "source-layer": "contour",
+            "layout": {"line-join": "round", "line-cap": "round"},
+            "paint": {
+                "line-color": "#c8b28d",
+                "line-width": [
+                    "interpolate",
+                    ["exponential", 1.3],
+                    ["zoom"],
+                    0,
+                    1,
+                    13,
+                    1,
+                    22,
+                    36
+                ],
+                "line-opacity": 0.7
+            }
+        },
+        {
+            "id": "Contour Fill",
+            "type": "fill",
+            "metadata": {"mapbox:group": "4038d10f07348e73fecf17cd901a6b68"},
+            "source": "composite",
+            "source-layer": "hillshade",
+            "filter": [
+                "all",
+                ["match", ["get", "class"], ["highlight"], true, false],
+                [">=", ["get", "level"], 90]
+            ],
+            "layout": {},
+            "paint": {"fill-color": "#c8b28d", "fill-opacity": 0.6}
+        },
+        {
+            "id": "Building Fill",
+            "type": "fill",
+            "metadata": {"mapbox:group": "677cc07e09f9642a455099d4b771103c"},
+            "source": "composite",
+            "source-layer": "building",
+            "layout": {},
+            "paint": {"fill-color": "#c8b28d", "fill-opacity": 0.9}
+        },
+        {
+            "id": "Building Line",
+            "type": "line",
+            "metadata": {"mapbox:group": "677cc07e09f9642a455099d4b771103c"},
+            "source": "composite",
+            "source-layer": "building",
+            "layout": {"line-join": "round"},
+            "paint": {
+                "line-color": "#40423d",
+                "line-width": [
+                    "interpolate",
+                    ["exponential", 1.4],
+                    ["zoom"],
+                    15,
+                    1,
+                    22,
+                    24
+                ]
+            }
+        },
+        {
+            "id": "Railway Line",
+            "type": "line",
+            "metadata": {"mapbox:group": "e3dd7e5f56a788fdb6fe3927db6bac2d"},
+            "source": "composite",
+            "source-layer": "road",
+            "filter": ["match", ["get", "class"], ["major_rail"], true, false],
+            "layout": {},
+            "paint": {
+                "line-color": "#40423d",
+                "line-width": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    13,
+                    1,
+                    22,
+                    72
+                ]
+            }
+        },
+        {
+            "id": "Railway Dot",
+            "type": "circle",
+            "metadata": {"mapbox:group": "e3dd7e5f56a788fdb6fe3927db6bac2d"},
+            "source": "composite",
+            "source-layer": "road",
+            "filter": ["match", ["get", "class"], ["major_rail"], true, false],
+            "layout": {},
+            "paint": {
+                "circle-color": "#dec29b",
+                "circle-radius": [
+                    "interpolate",
+                    ["exponential", 1.3],
+                    ["zoom"],
+                    15,
+                    1,
+                    22,
+                    28
+                ]
+            }
+        },
+        {
+            "id": "Railway Station",
+            "type": "circle",
+            "metadata": {"mapbox:group": "e3dd7e5f56a788fdb6fe3927db6bac2d"},
+            "source": "composite",
+            "source-layer": "transit_stop_label",
+            "filter": [
+                "all",
+                ["match", ["get", "mode"], ["rail"], true, false],
+                [
+                    "match",
+                    ["get", "mode"],
+                    [
+                        "metro_rail",
+                        "monorail",
+                        "ferry",
+                        "light_rail",
+                        "miniature",
+                        "bicycle",
+                        "bus"
+                    ],
+                    false,
+                    true
+                ]
+            ],
+            "layout": {},
+            "paint": {
+                "circle-color": "#40423d",
+                "circle-radius": [
+                    "interpolate",
+                    ["exponential", 1.3],
+                    ["zoom"],
+                    15,
+                    1,
+                    22,
+                    64
+                ]
+            }
+        },
+        {
+            "id": "Major Roads",
+            "type": "line",
+            "metadata": {"mapbox:group": "ba3540579e55c5f1f51fb98ccae6aa0e"},
+            "source": "composite",
+            "source-layer": "road",
+            "filter": ["match", ["get", "class"], ["motorway"], true, false],
+            "layout": {"line-join": "round", "line-cap": "round"},
+            "paint": {
+                "line-width": [
+                    "interpolate",
+                    ["exponential", 1.4],
+                    ["zoom"],
+                    0,
+                    1,
+                    13,
+                    1,
+                    22,
+                    72
+                ],
+                "line-color": "#40423d"
+            }
+        },
+        {
+            "id": "Minor Roads",
+            "type": "line",
+            "metadata": {"mapbox:group": "ba3540579e55c5f1f51fb98ccae6aa0e"},
+            "source": "composite",
+            "source-layer": "road",
+            "filter": [
+                "match",
+                ["get", "class"],
+                [
+                    "motorway_link",
+                    "primary",
+                    "secondary",
+                    "street",
+                    "tertiary",
+                    "trunk"
+                ],
+                true,
+                false
+            ],
+            "layout": {},
+            "paint": {
+                "line-width": [
+                    "interpolate",
+                    ["exponential", 1.4],
+                    ["zoom"],
+                    0,
+                    1,
+                    13,
+                    1,
+                    22,
+                    48
+                ],
+                "line-color": "#40423d"
+            }
+        },
+        {
+            "id": "Paths",
+            "type": "line",
+            "metadata": {"mapbox:group": "ba3540579e55c5f1f51fb98ccae6aa0e"},
+            "source": "composite",
+            "source-layer": "road",
+            "filter": ["match", ["get", "class"], ["path"], true, false],
+            "layout": {"line-cap": "round", "line-join": "round"},
+            "paint": {
+                "line-width": [
+                    "interpolate",
+                    ["exponential", 1.5],
+                    ["zoom"],
+                    0,
+                    1,
+                    15,
+                    1,
+                    22,
+                    24
+                ],
+                "line-dasharray": [3, 4],
+                "line-color": "#40423d"
+            }
+        },
+        {
+            "id": "Border",
+            "type": "line",
+            "metadata": {"mapbox:group": "ba3540579e55c5f1f51fb98ccae6aa0e"},
+            "source": "composite",
+            "source-layer": "admin",
+            "filter": ["match", ["get", "maritime"], ["false"], true, false],
+            "layout": {},
+            "paint": {
+                "line-dasharray": [10, 1, 1, 1, 1, 1],
+                "line-width": [
+                    "interpolate",
+                    ["exponential", 1.4],
+                    ["zoom"],
+                    6,
+                    1,
+                    22,
+                    144
+                ],
+                "line-color": "#40423d"
+            }
+        },
+        {
+            "id": "Water Fill",
+            "type": "fill",
+            "metadata": {"mapbox:group": "647daebc59426f62bc518e3e7b7da275"},
+            "source": "composite",
+            "source-layer": "water",
+            "layout": {},
+            "paint": {"fill-color": "#9e9985"}
+        },
+        {
+            "id": "Water Line",
+            "type": "line",
+            "metadata": {"mapbox:group": "647daebc59426f62bc518e3e7b7da275"},
+            "source": "composite",
+            "source-layer": "water",
+            "layout": {"line-join": "round", "line-cap": "round"},
+            "paint": {
+                "line-color": "#40423d",
+                "line-width": [
+                    "interpolate",
+                    ["exponential", 1.3],
+                    ["zoom"],
+                    0,
+                    1,
+                    15,
+                    1,
+                    22,
+                    36
+                ]
+            }
+        },
+        {
+            "id": "City Name",
+            "type": "symbol",
+            "metadata": {"mapbox:group": "ce4dfaf1163a97380a0a24175a0a884e"},
+            "source": "composite",
+            "source-layer": "place_label",
+            "filter": [
+                "all",
+                ["match", ["get", "type"], ["city", "town"], true, false],
+                ["match", ["get", "filterrank"], [1], true, false]
+            ],
+            "layout": {
+                "text-field": "{name}",
+                "text-font": ["Raleway Black", "Arial Unicode MS Regular"],
+                "text-letter-spacing": 0.2,
+                "text-size": [
+                    "interpolate",
+                    ["exponential", 1.2],
+                    ["zoom"],
+                    8,
+                    8,
+                    22,
+                    144
+                ]
+            },
+            "paint": {"text-color": "#40423d"}
+        },
+        {
+            "id": "Stations",
+            "type": "symbol",
+            "metadata": {"mapbox:group": "ce4dfaf1163a97380a0a24175a0a884e"},
+            "source": "composite",
+            "source-layer": "transit_stop_label",
+            "filter": [
+                "all",
+                ["match", ["get", "mode"], ["rail"], true, false],
+                [
+                    "match",
+                    ["get", "mode"],
+                    [
+                        "metro_rail",
+                        "monorail",
+                        "ferry",
+                        "light_rail",
+                        "miniature",
+                        "bicycle",
+                        "bus"
+                    ],
+                    false,
+                    true
+                ]
+            ],
+            "layout": {
+                "text-field": "{name}",
+                "text-font": ["Raleway Black", "Arial Unicode MS Regular"],
+                "text-size": [
+                    "interpolate",
+                    ["exponential", 1.2],
+                    ["zoom"],
+                    8,
+                    8,
+                    22,
+                    72
+                ],
+                "text-letter-spacing": 0.2,
+                "text-max-width": 5,
+                "text-anchor": "right",
+                "text-offset": [
+                    "interpolate",
+                    ["linear"],
+                    ["zoom"],
+                    12,
+                    ["literal", [0, 0]],
+                    22,
+                    ["literal", [2, 0]]
+                ]
+            },
+            "paint": {"text-color": "#40423d"}
+        },
+        {
+            "id": "Viewpoints",
+            "type": "symbol",
+            "metadata": {"mapbox:group": "ce4dfaf1163a97380a0a24175a0a884e"},
+            "source": "composite",
+            "source-layer": "poi_label",
+            "filter": ["match", ["get", "type"], ["Viewpoint"], true, false],
+            "layout": {
+                "text-field": "{name}",
+                "text-font": [
+                    "Homemade Apple Regular",
+                    "Arial Unicode MS Regular"
+                ],
+                "text-letter-spacing": 1,
+                "text-size": [
+                    "interpolate",
+                    ["exponential", 1.2],
+                    ["zoom"],
+                    8,
+                    8,
+                    22,
+                    72
+                ]
+            },
+            "paint": {"text-color": "#716454"}
+        },
+        {
+            "id": "Natural Features",
+            "type": "symbol",
+            "metadata": {"mapbox:group": "ce4dfaf1163a97380a0a24175a0a884e"},
+            "source": "composite",
+            "source-layer": "natural_label",
+            "filter": [">", ["get", "elevation_ft"], 10000],
+            "layout": {
+                "text-field": "{name}",
+                "text-letter-spacing": 1,
+                "text-font": ["Noto Serif Italic", "Arial Unicode MS Regular"],
+                "text-size": [
+                    "interpolate",
+                    ["exponential", 1.2],
+                    ["zoom"],
+                    8,
+                    8,
+                    22,
+                    72
+                ],
+                "text-transform": "uppercase"
+            },
+            "paint": {"text-color": "#40423d"}
+        },
+        {
+            "id": "Major Water Body",
+            "type": "symbol",
+            "metadata": {"mapbox:group": "ce4dfaf1163a97380a0a24175a0a884e"},
+            "source": "composite",
+            "source-layer": "natural_label",
+            "filter": [
+                "match",
+                ["get", "class"],
+                ["river", "stream"],
+                false,
+                true
+            ],
+            "layout": {
+                "text-field": "{name}",
+                "text-font": [
+                    "Noto Serif Bold Italic",
+                    "Arial Unicode MS Regular"
+                ],
+                "text-transform": "uppercase",
+                "text-line-height": 2,
+                "text-letter-spacing": 1,
+                "text-size": [
+                    "interpolate",
+                    ["exponential", 1.2],
+                    ["zoom"],
+                    8,
+                    8,
+                    22,
+                    144
+                ]
+            },
+            "paint": {"text-color": "#40423d"}
+        },
+        {
+            "id": "Minor Water Body ",
+            "type": "symbol",
+            "metadata": {"mapbox:group": "ce4dfaf1163a97380a0a24175a0a884e"},
+            "source": "composite",
+            "source-layer": "natural_label",
+            "filter": [
+                "match",
+                ["get", "class"],
+                [
+                    "stream",
+                    "river",
+                    "water_feature",
+                    "glacier",
+                    "wetland",
+                    "dock"
+                ],
+                true,
+                false
+            ],
+            "layout": {
+                "text-field": "{name}",
+                "text-font": [
+                    "Crimson Text Bold Italic",
+                    "Arial Unicode MS Regular"
+                ],
+                "text-size": [
+                    "interpolate",
+                    ["exponential", 1.2],
+                    ["zoom"],
+                    8,
+                    8,
+                    22,
+                    72
+                ],
+                "text-line-height": 0.9,
+                "text-max-width": 5
+            },
+            "paint": {"text-color": "#40423d"}
+        },
+        {
+            "id": "Post Offices.",
+            "type": "symbol",
+            "metadata": {"mapbox:group": "ed0cc92f134c4c11442b0f497900da8f"},
+            "source": "composite",
+            "source-layer": "poi_label",
+            "filter": [
+                "match",
+                ["get", "category_en"],
+                ["Post Office"],
+                true,
+                false
+            ],
+            "layout": {"icon-image": "post", "icon-size": 2},
+            "paint": {}
+        },
+        {
+            "id": "Pollice",
+            "type": "symbol",
+            "metadata": {"mapbox:group": "ed0cc92f134c4c11442b0f497900da8f"},
+            "source": "composite",
+            "source-layer": "poi_label",
+            "filter": [
+                "match",
+                ["get", "category_en"],
+                ["Police"],
+                true,
+                false
+            ],
+            "layout": {"icon-image": "police", "icon-size": 2},
+            "paint": {}
+        },
+        {
+            "id": "library",
+            "type": "symbol",
+            "metadata": {"mapbox:group": "ed0cc92f134c4c11442b0f497900da8f"},
+            "source": "composite",
+            "source-layer": "poi_label",
+            "filter": [
+                "match",
+                ["get", "category_en"],
+                ["Library"],
+                true,
+                false
+            ],
+            "layout": {"icon-image": "library", "icon-size": 2},
+            "paint": {}
+        },
+        {
+            "id": "Gym",
+            "type": "symbol",
+            "metadata": {"mapbox:group": "ed0cc92f134c4c11442b0f497900da8f"},
+            "source": "composite",
+            "source-layer": "poi_label",
+            "filter": [
+                "match",
+                ["get", "category_en"],
+                ["Sports Complex"],
+                true,
+                false
+            ],
+            "layout": {"icon-image": "fitness-centre", "icon-size": 2},
+            "paint": {}
+        },
+        {
+            "id": "Bank",
+            "type": "symbol",
+            "metadata": {"mapbox:group": "ed0cc92f134c4c11442b0f497900da8f"},
+            "source": "composite",
+            "source-layer": "poi_label",
+            "filter": ["match", ["get", "category_en"], ["Bank"], true, false],
+            "layout": {"icon-size": 2, "icon-image": "bank"},
+            "paint": {}
+        },
+        {
+            "id": "Doctor",
+            "type": "symbol",
+            "metadata": {"mapbox:group": "ed0cc92f134c4c11442b0f497900da8f"},
+            "source": "composite",
+            "source-layer": "poi_label",
+            "filter": [
+                "match",
+                ["get", "category_en"],
+                ["Doctor’s Office", "Hospital Grounds"],
+                true,
+                false
+            ],
+            "layout": {"icon-size": 2, "icon-image": "doctor"},
+            "paint": {}
+        },
+        {
+            "id": "Theater",
+            "type": "symbol",
+            "metadata": {"mapbox:group": "ed0cc92f134c4c11442b0f497900da8f"},
+            "source": "composite",
+            "source-layer": "poi_label",
+            "filter": [
+                "match",
+                ["get", "category_en"],
+                ["Theater"],
+                true,
+                false
+            ],
+            "layout": {"icon-size": 2, "icon-image": "theatre"},
+            "paint": {}
+        },
+        {
+            "id": "Shop",
+            "type": "symbol",
+            "metadata": {"mapbox:group": "ed0cc92f134c4c11442b0f497900da8f"},
+            "source": "composite",
+            "source-layer": "poi_label",
+            "filter": [
+                "match",
+                ["get", "category_en"],
+                ["Convenience Store", "Supermarket", "Shop", "Mall"],
+                true,
+                false
+            ],
+            "layout": {"icon-size": 2, "icon-image": "commercial"},
+            "paint": {}
+        },
+        {
+            "id": "Bar",
+            "type": "symbol",
+            "metadata": {"mapbox:group": "ed0cc92f134c4c11442b0f497900da8f"},
+            "source": "composite",
+            "source-layer": "poi_label",
+            "filter": [
+                "match",
+                ["get", "category_en"],
+                ["Bar", "Pub"],
+                true,
+                false
+            ],
+            "layout": {"icon-size": 2, "icon-image": "beer"},
+            "paint": {}
+        }
+    ],
+    "created": "2025-10-16T20:12:24.393Z",
+    "modified": "2025-10-16T23:22:45.431Z",
+    "id": "cmgtuwcll003k01qrexcs3se4",
+    "owner": "mamalmirza",
+    "visibility": "private",
+    "protected": false,
+    "draft": false
+}
