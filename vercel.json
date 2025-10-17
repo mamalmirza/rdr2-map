@@ -3,8 +3,5 @@
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "outputDirectory": ".next",
-  "env": {
-    "NEXT_PUBLIC_GOOGLE_MAPS_API_KEY": "@google_maps_api_key"
-  }
+  "outputDirectory": ".next"
 }

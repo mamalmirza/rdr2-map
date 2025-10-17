@@ -9,7 +9,7 @@ This Next.js application displays Leaflet and Google Maps side by side for compa
 Create a `.env.local` file in the root directory and add your Google Maps API key:
 
 ```bash
-NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
+# NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
 ```
 
 ### 2. Get Google Maps API Key
