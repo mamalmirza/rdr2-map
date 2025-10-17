@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import MapboxMap from '@/components/MapboxMap';
 
 // Define type for Mapbox Search Results
@@ -14,6 +16,9 @@ interface MapboxResult {
 }
 
 export default function Home() {
+  // Toggle search bar visibility
+  const showSearch = false;
+
   // Mapbox access token
   const mapboxAccessToken = 'pk.eyJ1IjoibWFtYWxtaXJ6YSIsImEiOiJjbWd0dHZvczAwNXBxMm1xMjlsYXlvNmQ5In0.MeoSaYoFCOrxx1pQRs7YHA';
   
@@ -83,71 +88,72 @@ export default function Home() {
               </h1>
             </div>
 
-            {/*
-            // Search Bar (Commented Out)
-            <div className="mb-6 max-w-2xl mx-auto">
-              <div className="relative">
-                <div className="flex gap-2">
-                  <Input
-                    type="text"
-                    placeholder="Search for a location (e.g., New York, London, Tokyo)..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    className="flex-1"
-                    style={{ 
-                      fontFamily: '"Chinese Rocks RG", "Chinese Rocks", "ChineseRocksRG", "ChineseRocks", Arial, sans-serif',
-                      letterSpacing: '1px'
-                    }}
-                  />
-                  <Button 
-                    onClick={handleSearch}
-                    disabled={isSearching || !searchQuery.trim()}
-                    className="px-6"
-                    style={{ 
-                      fontFamily: '"Chinese Rocks RG", "Chinese Rocks", "ChineseRocksRG", "ChineseRocks", Arial, sans-serif',
-                      letterSpacing: '1px'
-                    }}
-                  >
-                    {isSearching ? 'Searching...' : 'Search'}
-                  </Button>
-                </div>
-                
-                {searchResults.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
-                    {searchResults.map((result, index) => (
-                        <div
-                          key={index}
-                          onClick={() => handleLocationSelect(result)}
-                          className="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
-                          style={{ 
-                            fontFamily: '"Chinese Rocks RG", "Chinese Rocks", "ChineseRocksRG", "ChineseRocks", Arial, sans-serif'
-                          }}
-                        >
-                          <div className="font-medium text-gray-900" style={{ letterSpacing: '0.5px' }}>
-                            {result.place_name}
-                          </div>
-                          <div className="text-sm text-gray-500" style={{ letterSpacing: '0.5px' }}>
-                            {result.properties?.category || 'Location'}
-                          </div>
-                        </div>
-                    ))}
+            {/* Search Bar (conditionally rendered) */}
+            {showSearch && (
+              <div className="mb-6 max-w-2xl mx-auto">
+                <div className="relative">
+                  <div className="flex gap-2">
+                    <Input
+                      type="text"
+                      placeholder="Search for a location (e.g., New York, London, Tokyo)..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyPress={handleKeyPress}
+                      className="flex-1"
+                      style={{ 
+                        fontFamily: '"Chinese Rocks RG", "Chinese Rocks", "ChineseRocksRG", "ChineseRocks", Arial, sans-serif',
+                        letterSpacing: '1px'
+                      }}
+                    />
+                    <Button 
+                      onClick={handleSearch}
+                      disabled={isSearching || !searchQuery.trim()}
+                      className="px-6"
+                      style={{ 
+                        fontFamily: '"Chinese Rocks RG", "Chinese Rocks", "ChineseRocksRG", "ChineseRocks", Arial, sans-serif',
+                        letterSpacing: '1px'
+                      }}
+                    >
+                      {isSearching ? 'Searching...' : 'Search'}
+                    </Button>
                   </div>
-                )}
+                  
+                  {/* Search Results Dropdown */}
+                  {searchResults.length > 0 && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
+                      {searchResults.map((result, index) => (
+                          <div
+                            key={index}
+                            onClick={() => handleLocationSelect(result)}
+                            className="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                            style={{ 
+                              fontFamily: '"Chinese Rocks RG", "Chinese Rocks", "ChineseRocksRG", "ChineseRocks", Arial, sans-serif'
+                            }}
+                          >
+                            <div className="font-medium text-gray-900" style={{ letterSpacing: '0.5px' }}>
+                              {result.place_name}
+                            </div>
+                            <div className="text-sm text-gray-500" style={{ letterSpacing: '0.5px' }}>
+                              {result.properties?.category || 'Location'}
+                            </div>
+                          </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-            */}
+            )}
 
             <div className="max-w-6xl mx-auto">
               {/* RDR2 Style Map */}
               <Card className="h-[600px]">
                 <CardContent className="p-0 h-full">
                     <MapboxMap 
-                    className="rounded-b-lg h-full" 
-                    accessToken={mapboxAccessToken}
-                    styleUrl="mapbox://styles/mamalmirza/cmgtuwcll003k01qrexcs3se4"
-                    selectedLocation={selectedLocation}
-                  />
+                      className="rounded-b-lg h-full" 
+                      accessToken={mapboxAccessToken}
+                      styleUrl="mapbox://styles/mamalmirza/cmgtuwcll003k01qrexcs3se4"
+                      selectedLocation={selectedLocation}
+                    />
                 </CardContent>
               </Card>
             </div>
