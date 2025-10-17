@@ -359,7 +359,7 @@ export default function MapboxMap({ className = '', accessToken, styleUrl, local
            // Create marker with custom element using a different approach
            try {
              // Try to create marker with custom element directly
-             markerInstance.current = new window.mapboxgl.Marker(playerMarkerElement) as unknown as MinimalMarker;
+             markerInstance.current = new window.mapboxgl.Marker({ element: playerMarkerElement }) as unknown as MinimalMarker;
              if (markerInstance.current && mapInstance.current) {
                markerInstance.current.setLngLat(playerLocation); // Use device location, not map center
                markerInstance.current.addTo(mapInstance.current);
